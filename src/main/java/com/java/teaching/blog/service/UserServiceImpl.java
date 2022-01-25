@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +28,13 @@ public class UserServiceImpl implements UserService {
     public Optional<User> saveUser(User user) {
         return Optional.of(usersRepository.save(user));
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> findAllByUsernameOrEmail(String name, String email) {
+        return usersRepository.findAllByUsernameOrEmail(name, email);
+    }
+
 
     private User getUserByPrincipal(Principal principal) {
         String username = principal.getName();
