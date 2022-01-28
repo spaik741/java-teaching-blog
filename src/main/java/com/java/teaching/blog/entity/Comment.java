@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "comment")
+@Table(name = "comments")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Comment {
@@ -27,4 +27,8 @@ public class Comment {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     private Post post;
+    @JoinColumn(name = "id_user")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private User user;
 }

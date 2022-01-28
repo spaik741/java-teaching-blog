@@ -29,18 +29,6 @@ public class AuthController {
 
     private final JWTTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
-    private final UserService userService;
-    private final RoleRepository roleRepository;
-
-    @PostMapping("/auth/save")
-    public ResponseEntity<?> save(@RequestBody User user) {
-        Optional<User> checkUser = getCheckUser(user);
-        if (checkUser.isEmpty()) {
-            return new ResponseEntity<>(new MessageResponse("Not save user"), HttpStatus.BAD_REQUEST);
-        }
-        return userService.saveUser(user).map(u -> new ResponseEntity<Object>(u, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(new MessageResponse("Not save user"), HttpStatus.BAD_REQUEST));
-    }
 
     @PostMapping("/auth/login")
     public ResponseEntity<?> getAuthUser(@RequestBody LoginRequest loginRequest) {
@@ -53,20 +41,6 @@ public class AuthController {
         String jwt = jwtTokenProvider.generateToken(authentication);
 
         return ResponseEntity.ok(new JWTTokenSuccessResponse(true, jwt));
-    }
-
-    private Optional<User> getCheckUser(User user) {
-        if (CollectionUtils.isNotEmpty(userService.findAllByUsernameOrEmail(user.getUsername(), user.getEmail()))) {
-            return Optional.empty();
-        }
-        if (CollectionUtils.isEmpty(user.getRoles())) {
-            Optional<Role> roleUser = roleRepository.getRoleByName("ROLE_USER");
-            if (roleUser.isEmpty()) {
-                return Optional.empty();
-            }
-            user.setRoles(Collections.singleton(roleUser.get()));
-        }
-        return Optional.of(user);
     }
 
     @Data

@@ -1,13 +1,16 @@
 package com.java.teaching.blog.service;
 
+import com.java.teaching.blog.entity.Post;
 import com.java.teaching.blog.entity.User;
 import com.java.teaching.blog.repository.UsersRepository;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +38,11 @@ public class UserServiceImpl implements UserService {
         return usersRepository.findAllByUsernameOrEmail(name, email);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<User> getUserById(long id) {
+        return usersRepository.findById(id);
+    }
 
     private User getUserByPrincipal(Principal principal) {
         String username = principal.getName();

@@ -23,9 +23,5 @@ public class Post {
     private String text;
     @Column(name = "date_post")
     private Date datePost;
-    @JoinColumn(name = "id_user")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private User user;
 
 }
