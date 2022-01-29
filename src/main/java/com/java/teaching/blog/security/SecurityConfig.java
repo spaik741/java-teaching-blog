@@ -35,18 +35,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(SecurityConstants.SIGN_UP_URLS).permitAll()
                 .antMatchers(HttpMethod.POST, "/posts").hasRole("ADMIN")
-                .antMatchers("/posts").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/posts/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/posts/*").hasRole("ADMIN")
+                .antMatchers("/posts/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-//    @Override
-//    public void configure(WebSecurity web) {
-//        web.ignoring()
-//                .antMatchers("/h2-console/**");
-//    }
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring()
+                .antMatchers(HttpMethod.GET, "/posts");
+    }
 
     @Override
     @Bean(BeanIds.AUTHENTICATION_MANAGER)

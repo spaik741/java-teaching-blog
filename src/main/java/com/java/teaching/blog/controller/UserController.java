@@ -9,10 +9,12 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -25,25 +27,14 @@ public class UserController {
 
     @PostMapping("/users/save")
     public ResponseEntity<?> save(@RequestBody User user) {
-        Optional<User> checkUser = getCheckUser(user);
-        if (checkUser.isEmpty()) {
-            return new ResponseEntity<>(new MessageResponse("Not save user"), HttpStatus.BAD_REQUEST);
-        }
         return userService.saveUser(user).map(u -> new ResponseEntity<Object>(u, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(new MessageResponse("Not save user"), HttpStatus.BAD_REQUEST));
     }
 
-    private Optional<User> getCheckUser(User user) {
-        if (CollectionUtils.isNotEmpty(userService.findAllByUsernameOrEmail(user.getUsername(), user.getEmail()))) {
-            return Optional.empty();
-        }
-        if (CollectionUtils.isEmpty(user.getRoles())) {
-            Optional<Role> roleUser = roleRepository.getRoleByName("ROLE_USER");
-            if (roleUser.isEmpty()) {
-                return Optional.empty();
-            }
-            user.setRoles(Collections.singleton(roleUser.get()));
-        }
-        return Optional.of(user);
+    @GetMapping("/users")
+    public ResponseEntity<User> getCurrentUser(Principal principal) {
+        User user = userService.getCurrentUser(principal);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
 }

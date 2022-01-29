@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface UserService {
     User getCurrentUser(Principal principal);
-    List<User> findAllByUsernameOrEmail(String name, String email);
+    Optional<User> getUserByUsernameOrEmail(String name, String email);
     Optional<User> saveUser(User user);
     Optional<User> getUserById(long id);
 }
