@@ -19,7 +19,6 @@ public class CommentController {
 
     private final CommentService commentService;
     private final CommentFactory commentFactory;
-    private final UserService userService;
 
     @PostMapping("/comments/{idPost}")
     public ResponseEntity<?> save(@RequestParam("message") String message, @PathVariable("idPost") long idPost, @RequestParam("idUser") long idUser) {
