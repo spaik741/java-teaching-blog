@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.Optional;
 
@@ -28,6 +29,18 @@ public class CommentFactoryImpl implements CommentFactory {
         Optional<User> optionalUser = userService.getUserById(idUser);
         if (optionalPost.isPresent() && optionalUser.isPresent()) {
             comment = new Comment(null, text, new Date(), optionalPost.get(), optionalUser.get());
+        }
+        return Optional.ofNullable(comment);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Comment> createCommentWithPrincipal(String text, Date date, long idPost, Principal principal) {
+        Comment comment = null;
+        Optional<Post> optionalPost = postService.getPostById(idPost);
+        User user = userService.getCurrentUser(principal);
+        if (optionalPost.isPresent()) {
+            comment = new Comment(null, text, new Date(), optionalPost.get(), user);
         }
         return Optional.ofNullable(comment);
     }
