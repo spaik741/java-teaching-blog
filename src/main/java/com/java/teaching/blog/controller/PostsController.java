@@ -17,8 +17,8 @@ public class PostsController {
     private final PostService postService;
 
     @PostMapping("/posts")
-    public ResponseEntity<?> savePost(@RequestBody Post book) {
-        return postService.savePost(book)
+    public ResponseEntity<?> savePost(@RequestBody Post post) {
+        return postService.savePost(post)
                 .map(p -> new ResponseEntity<Object>(p, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(new MessageResponse("Not save post"), HttpStatus.BAD_REQUEST));
     }
