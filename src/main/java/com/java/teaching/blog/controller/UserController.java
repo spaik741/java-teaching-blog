@@ -27,7 +27,7 @@ public class UserController {
                 .orElse(new ResponseEntity<>(new MessageResponse("Not save user"), HttpStatus.BAD_REQUEST));
     }
 
-    @GetMapping("/users")
+    @PostMapping("/users")
     public ResponseEntity<UserDto> getCurrentUser(Principal principal) {
         UserDto user = UserMapper.userToUserDto(userService.getCurrentUser(principal));
         return new ResponseEntity<>(user, HttpStatus.OK);
