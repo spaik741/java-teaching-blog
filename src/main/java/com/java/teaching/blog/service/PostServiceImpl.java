@@ -25,6 +25,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Post> getAllPostsWithFilter(String word) {
+        List<Post> posts = postsRepository.findAllByTitleContainsOrTextContains(word, word);
+        return CollectionUtils.isEmpty(posts) ? new ArrayList<>() : posts;
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Optional<Post> getPostById(long id) {
         return getAllPosts().stream().filter(p -> p.getId() == id).findFirst();

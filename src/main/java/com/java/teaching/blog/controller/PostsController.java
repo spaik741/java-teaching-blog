@@ -29,6 +29,12 @@ public class PostsController {
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
+    @GetMapping("/posts/search/{word}")
+    public ResponseEntity<List<Post>> getAllPostsWithSearch(@PathVariable("word") String word) {
+        List<Post> books = postService.getAllPostsWithFilter(word);
+        return new ResponseEntity<>(books, HttpStatus.OK);
+    }
+
     @GetMapping("/posts/{id}")
     public ResponseEntity<?> getPost(@PathVariable("id") long id) {
         return postService.getPostById(id)
