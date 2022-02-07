@@ -15,4 +15,6 @@ public interface PostService {
     void deletePost(long id);
 
     Optional<Post> savePost(Post post);
+
+    long getCountPosts();
 }

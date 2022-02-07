@@ -25,14 +25,14 @@ public class PostsController {
 
     @GetMapping("/posts")
     public ResponseEntity<List<Post>> getAllPosts() {
-        List<Post> books = postService.getAllPosts();
-        return new ResponseEntity<>(books, HttpStatus.OK);
+        List<Post> posts = postService.getAllPosts();
+        return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
     @GetMapping("/posts/search/{word}")
     public ResponseEntity<List<Post>> getAllPostsWithSearch(@PathVariable("word") String word) {
-        List<Post> books = postService.getAllPostsWithFilter(word);
-        return new ResponseEntity<>(books, HttpStatus.OK);
+        List<Post> posts = postService.getAllPostsWithFilter(word);
+        return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
     @GetMapping("/posts/{id}")

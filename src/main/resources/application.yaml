@@ -6,7 +6,6 @@
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/java_blog?useSSL=false&serverTimezone=UTC
-#    driver-class-name: com.mysql.jdbc.Driver
     username: superuser
     password: superuser
   jpa:
@@ -17,5 +16,19 @@ spring:
     show-sql: true
 
 logging:
-  level:
-    root: ERROR
+#  level:
+#    root: ERROR
+  file:
+    name: target/logs/java_blog.log
+
+management:
+  endpoint:
+    health:
+      show-details: always
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: metrics, health, logfile
+      base-path: /monitor

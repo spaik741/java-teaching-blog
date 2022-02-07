@@ -47,4 +47,10 @@ public class PostServiceImpl implements PostService {
     public Optional<Post> savePost(Post post) {
         return Optional.of(postsRepository.save(post));
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public long getCountPosts() {
+        return postsRepository.count();
+    }
 }
