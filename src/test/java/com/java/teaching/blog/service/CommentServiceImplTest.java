@@ -1,9 +1,6 @@
 package com.java.teaching.blog.service;
 
 import com.java.teaching.blog.entity.Comment;
-import com.java.teaching.blog.entity.Post;
-import com.java.teaching.blog.entity.Role;
-import com.java.teaching.blog.entity.User;
 import com.java.teaching.blog.repository.CommentsRepository;
 import com.java.teaching.blog.repository.PostsRepository;
 import com.java.teaching.blog.repository.UsersRepository;
@@ -14,13 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.lang.UsesJava8;
 
-import java.util.Collections;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)

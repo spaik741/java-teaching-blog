@@ -1,7 +1,3 @@
-#
-#spring.datasource.url=jdbc:mysql://localhost:3306/instazoo?useSSL=false&serverTimezone=UTC
-#spring.datasource.username=superuser
-#spring.datasource.password=superuser
 
 spring:
   datasource:

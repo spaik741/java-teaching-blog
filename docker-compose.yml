@@ -1,0 +1,36 @@
+version: '3'
+services:
+  mysql:
+    image: library/mysql:8.0.25
+    restart: always
+    container_name: "mysql"
+    environment:
+      - MYSQL_DATABASE=java_blog
+      - MYSQL_ROOT_PASSWORD=123
+      - MYSQL_USER=superuser
+      - MYSQL_PASSWORD=superuser
+    ports:
+      - 3307:3306
+  back:
+    build: .
+    privileged: true
+    ports:
+      - 8080:8080
+    command: sh -c "/wait && java -Xms400m -Xmx400m -jar /opt/project/app.jar"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/java_blog?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=True
+      - WAIT_HOSTS=mysql:3306
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+    depends_on:
+      - mysql
+
+
+  front:
+    build: ../java-blog-frontend
+    ports:
+      - 4200:4200
+    volumes:
+      - "/app/node_modules"
+      - ".:/app"
