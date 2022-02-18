@@ -1,16 +1,41 @@
 version: '3'
 services:
-  mysql:
-    image: library/mysql:8.0.25
-    restart: always
-    container_name: "mysql"
-    environment:
-      - MYSQL_DATABASE=java_blog
-      - MYSQL_ROOT_PASSWORD=123
-      - MYSQL_USER=superuser
-      - MYSQL_PASSWORD=superuser
+#  mysql:
+#    image: library/mysql:8.0.25
+#    restart: always
+#    container_name: "mysql"
+#    environment:
+#      - MYSQL_DATABASE=java_blog
+#      - MYSQL_ROOT_PASSWORD=123
+#      - MYSQL_USER=superuser
+#      - MYSQL_PASSWORD=superuser
+#    ports:
+#      - 3307:3306
+#  back:
+#    build: .
+#    privileged: true
+#    ports:
+#      - 8080:8080
+#    command: sh -c "/wait && java -Xms400m -Xmx400m -jar /opt/project/app.jar"
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/java_blog?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=True
+#      - WAIT_HOSTS=mysql:3306
+#      - WAIT_HOSTS_TIMEOUT=300
+#      - WAIT_SLEEP_INTERVAL=30
+#      - WAIT_HOST_CONNECT_TIMEOUT=30
+#    depends_on:
+#      - mysql
+#
+  postgres:
+    image: "postgres"
     ports:
-      - 3307:3306
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=superuser
+      - POSTGRES_PASSWORD=superuser
+      - POSTGRES_DB=java_blog
+
+
   back:
     build: .
     privileged: true
@@ -18,19 +43,22 @@ services:
       - 8080:8080
     command: sh -c "/wait && java -Xms400m -Xmx400m -jar /opt/project/app.jar"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/java_blog?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=True
-      - WAIT_HOSTS=mysql:3306
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/java_blog
+      - WAIT_HOSTS=postgres:5432
       - WAIT_HOSTS_TIMEOUT=300
       - WAIT_SLEEP_INTERVAL=30
       - WAIT_HOST_CONNECT_TIMEOUT=30
     depends_on:
-      - mysql
+      - postgres
 
-
-  front:
-    build: ../java-blog-frontend
-    ports:
-      - 4200:4200
-    volumes:
-      - "/app/node_modules"
-      - ".:/app"
+#  front:
+#    build: ../java-blog-frontend
+##      context: ../java-blog-frontend
+##      args:
+##        API_BASE_URL: http://127.0.0.1:8080/
+#    ports:
+#      - 4200:80
+#    links:
+#      - "back"
+#    depends_on:
+#      - "back"
