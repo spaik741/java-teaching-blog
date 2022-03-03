@@ -1,0 +1,30 @@
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/java_blog
+    username: superuser
+    password: superuser
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+
+    show-sql: true
+
+logging:
+#  level:
+#    root: ERROR
+  file:
+    name: target/logs/java_blog.log
+
+management:
+  endpoint:
+    health:
+      show-details: always
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: metrics, health, logfile
+      base-path: /monitor
